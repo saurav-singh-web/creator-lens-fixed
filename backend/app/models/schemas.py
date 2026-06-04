@@ -3,7 +3,7 @@ from typing import Optional
 
 class VideoIngestRequest(BaseModel):
     youtube_url: str
-    instagram_url: str
+    instagram_url: Optional[str] = None
 
 class VideoMetadata(BaseModel):
     video_id: str

@@ -15,9 +15,9 @@ export default function Home() {
   const [ingested, setIngested] = useState(false);
 
   const handleIngest = async () => {
-        console.log("handleIngest called", youtubeUrl, instagramUrl);
-    if (!youtubeUrl.trim() || !instagramUrl.trim()) {
-      setError("Please enter both URLs");
+    console.log("handleIngest called", youtubeUrl, instagramUrl);
+    if (!youtubeUrl.trim()) {
+      setError("Please enter at least a YouTube URL");
       return;
     }
     setLoading(true);
@@ -60,7 +60,7 @@ export default function Home() {
             />
             <input
               className="flex-1 bg-gray-800 text-white text-sm rounded-lg px-4 py-3 outline-none border border-gray-600 focus:border-blue-500"
-              placeholder="Instagram Reel URL (Video B)"
+              placeholder="Instagram Reel URL (Video B) - Optional"
               value={instagramUrl}
               onChange={(e) => setInstagramUrl(e.target.value)}
             />
@@ -91,7 +91,7 @@ export default function Home() {
 
         {!ingested && (
           <div className="text-center text-gray-600 mt-20">
-            <p className="text-lg">Enter two video URLs above to get started</p>
+            <p className="text-lg">Enter video URLs above to get started</p>
           </div>
         )}
       </div>

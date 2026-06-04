@@ -22,20 +22,28 @@ async def ingest_videos(request: VideoIngestRequest):
         yt_chunks = ingest_transcript(yt_transcript, yt_metadata, "A")
         video_store["A"] = yt_metadata
 
-        # Instagram ingestion — uses fallback internally, never raises
-        ig_data = get_instagram_data(request.instagram_url)
-        ig_chunks = ingest_transcript(
-            ig_data["transcript"],
-            ig_data["metadata"],
-            "B"
-        )
-        video_store["B"] = ig_data["metadata"]
+        # Instagram ingestion — optional
+        ig_chunks = 0
+        ig_metadata = None
+        if request.instagram_url and request.instagram_url.strip():
+            ig_data = get_instagram_data(request.instagram_url)
+            ig_chunks = ingest_transcript(
+                ig_data["transcript"],
+                ig_data["metadata"],
+                "B"
+            )
+            video_store["B"] = ig_data["metadata"]
+            ig_metadata = ig_data["metadata"]
+
+        message = f"Ingested Video A ({yt_chunks} chunks)"
+        if ig_metadata:
+            message += f" and Video B ({ig_chunks} chunks)"
 
         return {
             "success": True,
-            "message": f"Ingested Video A ({yt_chunks} chunks) and Video B ({ig_chunks} chunks)",
+            "message": message,
             "video_a": yt_metadata,
-            "video_b": ig_data["metadata"]
+            "video_b": ig_metadata
         }
     except Exception as e:
         import traceback

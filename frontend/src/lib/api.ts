@@ -31,7 +31,7 @@ export interface IngestResponse {
 
 export const ingestVideos = async (
   youtube_url: string,
-  instagram_url: string
+  instagram_url?: string
 ): Promise<IngestResponse> => {
   const response = await api.post("/ingest", {
     youtube_url,
